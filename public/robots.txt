@@ -1,0 +1,4 @@
+User-agent: *
+Disallow:
+
+Sitemap: https://playlinks.net/sitemap.xml
