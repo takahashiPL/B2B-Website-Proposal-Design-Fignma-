@@ -9,6 +9,12 @@ import { Textarea } from './ui/textarea';
 import { Checkbox } from './ui/checkbox';
 import { Button } from './ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
+import {
+  WEB3FORMS_ACCESS_KEY,
+  WEB3FORMS_ENDPOINT,
+  WEB3FORMS_FROM_NAME,
+  WEB3FORMS_SUBJECT,
+} from '@/config/web3forms';
 
 type FormData = {
   company: string;
@@ -45,30 +51,63 @@ export function ContactForm({ onClose }: ContactFormProps) {
   });
 
   const onSubmit = async (data: FormData) => {
-    // Honeypot check
-    if (data.website) {
-      console.log('Bot detected');
-      return;
+    setSubmitError(null);
+
+    // Access Key 未設定時は送信しない
+    const accessKey = (WEB3FORMS_ACCESS_KEY ?? '').trim()
+    if (!accessKey) {
+      setSubmitError('設定エラー：Web3FormsのAccess Keyが未設定です')
+      return
     }
 
-    // Simulate API call
+    // Honeypot: ボットと判断した場合は送信せず成功扱いで終了
     try {
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // TODO: integrate form backend
-      // Example: await fetch('/api/contact', { method: 'POST', body: JSON.stringify(data) });
+      if (typeof data.website === 'string' && data.website.trim().length > 0) {
+        setIsSubmitted(true);
+        setTimeout(() => {
+          onClose();
+        }, 3000);
+        return;
+      }
 
-      console.log('Form Data:', data);
+      const formData = new globalThis.FormData();
+
+      formData.append('access_key', accessKey);
+      formData.append('from_name', WEB3FORMS_FROM_NAME);
+      formData.append('subject', WEB3FORMS_SUBJECT);
+      // domain_name: playlinks.net は Web3Forms ダッシュボード側で設定する前提
+
+      formData.append('company', data.company);
+      formData.append('name', data.name);
+      formData.append('email', data.email);
+      formData.append('replyto', data.email);
+      formData.append('phone', typeof data.phone === 'string' ? data.phone : '');
+      formData.append('inquiryType', typeof data.inquiryType === 'string' ? data.inquiryType : '');
+      formData.append('budget', typeof data.budget === 'string' ? data.budget : '');
+      formData.append('timeline', typeof data.timeline === 'string' ? data.timeline : '');
+      formData.append('message', data.message);
+      formData.append('consent', String(data.consent));
+
+      const res = await fetch(WEB3FORMS_ENDPOINT, {
+        method: 'POST',
+        body: formData,
+      });
+
+      const json = (await res.json().catch(() => null)) as null | { success?: boolean; message?: string };
+
+      if (!res.ok || !json?.success) {
+        throw new Error(json?.message || 'Web3Forms submission failed');
+      }
+
       setIsSubmitted(true);
-      
+
       // Close form after 3 seconds
       setTimeout(() => {
         onClose();
-        // Optional: reset form state if needed, though unmounting handles it
       }, 3000);
 
     } catch (error) {
-      setSubmitError('送信中にエラーが発生しました。再度お試しください。');
+      setSubmitError('送信に失敗しました。時間をおいて再度お試しください。');
     }
   };
 

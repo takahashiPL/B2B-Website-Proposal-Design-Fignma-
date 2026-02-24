@@ -21,12 +21,15 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-# Local env files
+# Local env files (Vite: 秘密情報をコミットしない)
 .env
+.env.*
+!.env.example
 .env.local
+.env.*.local
+.env.production.local
 .env.development.local
 .env.test.local
-.env.production.local
 
 # Editor directories and files
 .vscode/*

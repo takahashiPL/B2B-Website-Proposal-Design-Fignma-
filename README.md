@@ -18,6 +18,13 @@ This is a code bundle for B2B Website Proposal Design. The original project is a
 - Node.js (v18 or higher recommended)
 - npm or yarn or pnpm
 
+### 本番ビルド時の環境変数（FTP デプロイ時）
+
+本番用ビルドでは、プロジェクトルートに **`.env.production.local`** を置き、Web3Forms の Access Key などを設定します。
+
+- **サンプル**: リポジトリの `.env.example` をコピーして `.env.production.local` を作成し、値を記入してください。
+- **注意**: `.env.production.local` の実キーは**絶対にコミットしないでください**。詳細は [DEPLOY.md](./DEPLOY.md) を参照してください。
+
 ## Getting Started
 
 ### Installation
@@ -48,14 +55,24 @@ The production build will be output to the `dist/` directory.
 
 ### Preview Production Build
 
-Preview the production build locally:
+ビルド結果をローカルで確認する場合:
 
 ```bash
 npm run build
-npx vite preview --port 4173
+npm run preview
 ```
 
-The preview will be available at `http://localhost:4173/`
+またはポート指定:
+
+```bash
+npx vite preview --host --port 4173
+```
+
+`http://localhost:4173/` で表示を確認できます。
+
+### 本番デプロイ（FTP / WinSCP）
+
+ローカルで `npm run build` した **`dist/` の中身**を FTP で本番サーバーにアップロードする手順は [DEPLOY.md](./DEPLOY.md) を参照してください。
 
 ## Project Structure
 
