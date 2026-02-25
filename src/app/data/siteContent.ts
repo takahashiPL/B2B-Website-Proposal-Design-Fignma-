@@ -61,7 +61,7 @@ export const siteContent = {
       { 
         title: "ゲームソフト開発", 
         icon: "🎮", 
-        desc: "コンシューマーからPCまで、プラットフォームを問わず高品質なゲーム開発を実現します。",
+        desc: "コンシューマーからPCまで、プラットフォームを問わず、高品質なゲーム開発を目指します。",
         bg: "from-blue-900/40 to-blue-800/10"
       },
       { 
@@ -134,7 +134,7 @@ export const siteContent = {
   },
   contact: {
     title: "お問い合わせ",
-    description: "開発のご相談、お見積もりのご依頼など、お気軽にご連絡ください。\n担当者より2営業日以内にご返信いたします。",
+    description: "開発のご相談、お見積もりのご依頼など、お気軽にご連絡ください。\n内容を確認のうえ、担当者より折り返しご連絡いたします。",
     formCard: {
       title: "お問い合わせフォーム",
       description: "Webフォームから24時間受付",
