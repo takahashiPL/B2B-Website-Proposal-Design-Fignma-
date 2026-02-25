@@ -31,19 +31,16 @@ export function Hero() {
             {siteContent.hero.tagline}
           </div>
           
-          <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold text-white tracking-tight leading-[1.1] drop-shadow-lg">
-            {siteContent.hero.title.split('\n').map((line, i) => (
-              <span key={i}>
-                {i === 1 ? (
-                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-200 via-white to-blue-200">
-                     {line}
-                   </span>
-                ) : (
-                  <>
-                    {line}
-                    {i < siteContent.hero.title.split('\n').length - 1 && <br />}
-                  </>
-                )}
+          <h1
+            className="font-bold text-white tracking-tight leading-[1.12] drop-shadow-lg text-balance [text-wrap:balance] max-w-[24ch] sm:max-w-[28ch] md:max-w-[32ch] lg:max-w-[38ch] text-[clamp(1.75rem,4vw,3.5rem)] sm:text-[clamp(2rem,5vw,4rem)] lg:text-[clamp(2.5rem,5vw,4.5rem)]"
+            style={{ textWrap: "balance" } as React.CSSProperties}
+          >
+            {siteContent.hero.titleChunks.map((chunk, i) => (
+              <span
+                key={i}
+                className={chunk.nowrap ? "inline-block whitespace-nowrap" : undefined}
+              >
+                {chunk.text}
               </span>
             ))}
           </h1>

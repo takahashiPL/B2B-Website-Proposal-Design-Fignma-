@@ -14,7 +14,17 @@ export const siteContent = {
   },
   hero: {
     tagline: "受託開発・共同開発に対応",
-    title: "ゲーム・アプリ・遊技機向け\n開発を企画から実装まで一貫対応",
+    /** 改行ルール: 語中改行禁止。・の後 or 塊の境界でのみ改行可 */
+    titleChunks: [
+      { text: "ゲーム・", nowrap: true },
+      { text: "アプリ・", nowrap: true },
+      { text: "遊技機向け", nowrap: true },
+      { text: " " },
+      { text: "開発を", nowrap: true },
+      { text: "企画から", nowrap: true },
+      { text: "実装まで", nowrap: true },
+      { text: "一貫対応", nowrap: true },
+    ],
     description: "クライアントのビジョンを技術で形にする、信頼のパートナーシップ。\nPlayLinksは、あなたのプロジェクトを成功へ導きます。",
     primaryButton: "お問い合わせ（案件のご相談）",
     secondaryButton: "実績を見る（準備中）",
