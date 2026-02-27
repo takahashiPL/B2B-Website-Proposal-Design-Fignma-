@@ -1,19 +1,59 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ArrowRight, ChevronDown } from 'lucide-react';
 import { motion } from 'motion/react';
-import imgBg from "@/assets/e5d848128bf19ac3f9f8fe3469a57ec2410531ad.png";
+import imgBg from "@/assets/hero-bg-960x640.png";
+import heroVideo from "@/assets/hero-seq-loop-960x640.mp4";
 import { siteContent } from '../data/siteContent';
 
 export function Hero() {
+  const [videoReady, setVideoReady] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    const tryPlay = async () => {
+      try {
+        const p = v.play();
+        if (p && typeof (p as Promise<unknown>).then === "function") await p;
+      } catch {
+        // autoplay がブロックされたら静止画のまま
+      }
+    };
+    tryPlay();
+  }, []);
+
   return (
     <div id="top" className="relative min-h-screen flex flex-col justify-center overflow-hidden pt-24 pb-12">
       {/* Background with abstract effects */}
       <div className="absolute inset-0 z-0">
-        <img 
-          src={imgBg} 
-          alt="Abstract Background" 
-          className="w-full h-full object-cover object-center brightness-75 contrast-125"
+        <img
+          src={imgBg}
+          alt="Abstract Background"
+          className={
+            "w-full h-full object-cover object-center brightness-75 contrast-125 transition-opacity duration-300 " +
+            (videoReady ? "opacity-0" : "opacity-100")
+          }
         />
+
+        <video
+          ref={videoRef}
+          className={
+            "absolute inset-0 w-full h-full object-cover object-center brightness-75 contrast-125 transition-opacity duration-300 pointer-events-none " +
+            (videoReady ? "opacity-100" : "opacity-0")
+          }
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          aria-hidden="true"
+          onPlaying={() => setVideoReady(true)}
+          onError={() => setVideoReady(false)}
+        >
+          <source src={heroVideo} type="video/mp4" />
+        </video>
+
         <div className="absolute inset-0 bg-gradient-to-t from-[#0a0f2c] via-transparent to-[#0a0f2c]/50"></div>
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-900/20 via-[#0a0f2c]/60 to-[#0a0f2c]"></div>
       </div>
